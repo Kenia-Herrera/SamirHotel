@@ -13,6 +13,7 @@ class opiniones extends Model
         'usuario_id',
         'comentario',
         'calificacion',
+        'aprovado',
         'fecha_opinion',
     ];
 }

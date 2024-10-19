@@ -12,5 +12,6 @@ class servicios extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'imagen_url',
     ];
 }

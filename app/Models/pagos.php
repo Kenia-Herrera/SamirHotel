@@ -13,6 +13,7 @@ class pagos extends Model
         'reserva_id',
         'monto',
         'metodo_pago',
+        'completado',
         'fecha_pago',
     ];
 }
