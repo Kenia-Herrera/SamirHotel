@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('tipo', 50);
             $table->text('descripcion');
             $table->boolean('disponible');
+            $table->string('imagen_url', 255);
             $table->decimal('precio', 10, 2);
             $table->timestamps();
         });
