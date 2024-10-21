@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('descripcion');
             $table->string('imagen_url', 255);
             $table->decimal('precio', 10, 2);
+            $table->integer('capacidad_max_adultos');
+            $table->integer('capacidad_max_ninos'); 
             $table->timestamps();
         });
     }

@@ -71,9 +71,9 @@ class reservaController extends Controller
         }
 
         // Guardar el costo por noche en la sesión para usarlo en la vista de pago
-        session(['costoPorNoche' => $precioTotal / $validatedData['noches']]);
-        
-        return redirect('/pago')->with('status', 'Reserva realizada con éxito. Precio total: $' . $precioTotal);
+        session(['costoTotal' => round($precioTotal, 2), 'costoPorNoche' => round($precioTotal / $validatedData['noches'], 2)]);
+
+        return redirect('/pago')->with('status', 'Reserva realizada con éxito. Precio total: $' . session('costoTotal'));
     }
 
     public function showPaymentForm()
@@ -102,3 +102,49 @@ class reservaController extends Controller
         return redirect('/pago')->with('status', 'Pago realizado con éxito.');
     }
 }
+
+
+
+
+// public function store(Request $request)
+// {
+//     $validatedData = $request->validate([
+//         'fechaInicio' => 'required|date',
+//         'fechaSalida' => 'required|date|after:fechaInicio',
+//         'numHabitaciones' => 'required|integer|min:1',
+//         'numAdultos' => 'required|integer|min:1',
+//         'numNinos' => 'nullable|integer|min:0',
+//     ]);
+
+//     // Calcular la capacidad total
+//     $totalHuespedes = $validatedData['numAdultos'] + $validatedData['numNinos'];
+
+//     // Buscar habitaciones disponibles por tipo y capacidad
+//     $reservasOcupadas = Reservas::where(function($query) use ($validatedData) {
+//         $query->whereBetween('fecha_entrada', [$validatedData['fechaInicio'], $validatedData['fechaSalida']])
+//               ->orWhereBetween('fecha_salida', [$validatedData['fechaInicio'], $validatedData['fechaSalida']])
+//               ->orWhere(function($query) use ($validatedData) {
+//                   $query->where('fecha_entrada', '<=', $validatedData['fechaInicio'])
+//                         ->where('fecha_salida', '>=', $validatedData['fechaSalida']);
+//               });
+//     })->pluck('habitacion_id')->toArray();
+
+//     $habitacionesDisponibles = Habitaciones::whereNotIn('id', $reservasOcupadas)
+//         ->where('capacidad_max_adultos', '>=', $validatedData['numAdultos'])
+//         ->where('capacidad_max_ninos', '>=', $validatedData['numNinos'])
+//         ->get();
+
+//     if ($habitacionesDisponibles->count() < $validatedData['numHabitaciones']) {
+//         return redirect('/reservar')->with('status', 'No hay disponibilidad para las fechas seleccionadas.');
+//     }
+
+//     // Continuar con el flujo normal
+//     return view('opciones', [
+//         'fechaInicio' => $validatedData['fechaInicio'],
+//         'fechaSalida' => $validatedData['fechaSalida'],
+//         'numHabitaciones' => $validatedData['numHabitaciones'],
+//         'numAdultos' => $validatedData['numAdultos'],
+//         'numNinos' => $validatedData['numNinos'],
+//         'habitacionesDisponibles' => $habitacionesDisponibles
+//     ]);
+// }
