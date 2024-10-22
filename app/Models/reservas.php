@@ -13,7 +13,7 @@ class reservas extends Model
         'usuario_id',
         'fecha_entrada',
         'fecha_salida',
-        'habitacion_id',
+        'tipo_habitacion',
         'num_huespedes',
         'fecha_reserva',
     ];
