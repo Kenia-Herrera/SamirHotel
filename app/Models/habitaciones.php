@@ -15,7 +15,5 @@ class habitaciones extends Model
         'disponible',
         'imagen_url',
         'precio',
-        'capacidad_max_adultos',
-        'capacidad_max_ninos', 
     ];
 }
