@@ -11,7 +11,7 @@ class facturas extends Model
 
     protected $fillable = [
         'pago_id',
-        'usuario_id',
+        'cliente_id',
         'fecha_emision',
         'detalles',
         'monto_total',

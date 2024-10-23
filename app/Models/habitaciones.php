@@ -12,7 +12,6 @@ class habitaciones extends Model
     protected $fillable = [
         'tipo',
         'descripcion',
-        'disponible',
         'imagen_url',
         'precio',
     ];

@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('facturas', function (Blueprint $table) {
+        Schema::create('habitaciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pago_id')->constrained('pagos');
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-            $table->timestamp('fecha_emision')->useCurrent();
-            $table->text('detalles');
-            $table->decimal('monto_total', 10, 2);
+            $table->string('tipo', 50);
+            $table->text('descripcion');
+            $table->string('imagen_url', 255);
+            $table->decimal('precio', 10, 2);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('facturas');
+        Schema::dropIfExists('habitaciones');
     }
 };
