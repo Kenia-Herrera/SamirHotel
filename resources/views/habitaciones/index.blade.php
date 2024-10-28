@@ -1,4 +1,4 @@
-@extends('layouts.app') <!-- Asegúrate de tener un layout -->
+@extends('layouts.app')
 
 @section('content')
 <div class="container my-5">
@@ -20,4 +20,4 @@
         @endforeach
     </div>
 </div>
-@endsection  
+@endsection

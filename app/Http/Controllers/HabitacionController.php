@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\habitaciones;
+use App\Models\TipoHabitacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; 
 
 class HabitacionController extends Controller
 {
-    
     public function create()
     {
         return view('admin.crear_habitacion'); 
     }
 
-
     public function store(Request $request)
     {
-        // dd($request->all());
         Log::info("Datos recibidos:", $request->all());
         $request->validate([
             'tipo' => 'required|string|max:50',
@@ -27,7 +24,7 @@ class HabitacionController extends Controller
         ]);
 
         try {
-            habitaciones::create([
+            TipoHabitacion::create([
                 'tipo' => $request->tipo,
                 'descripcion' => $request->descripcion,
                 'precio' => $request->precio,
@@ -44,9 +41,7 @@ class HabitacionController extends Controller
 
     public function index()
     {
-        $habitaciones = habitaciones::all(); 
+        $habitaciones = TipoHabitacion::all(); 
         return view('habitaciones.index', compact('habitaciones')); 
     }
-
-
 }
