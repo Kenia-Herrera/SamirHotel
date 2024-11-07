@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
             $table->text('comentario');
             $table->integer('calificacion');
-            $table->boolean('aprovado');
+            $table->boolean('aprobado');
             $table->timestamp('fecha_opinion')->useCurrent();
             $table->timestamps();
         });

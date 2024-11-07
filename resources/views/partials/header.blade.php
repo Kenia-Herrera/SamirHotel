@@ -19,6 +19,9 @@
         <a class="nav-link" href="{{ route('servicios') }}" style="color: #8B4513;">Servicios</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{{ route('galeria') }}" style="color: #8B4513;">Galeria</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{{ route('contactos') }}" style="color: #8B4513;">Contactanos</a>
       </li>
     </ul>
