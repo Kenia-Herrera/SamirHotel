@@ -13,6 +13,9 @@
       <a class="nav-link" href="{{ route('inicio') }}" style="color: #A0522D;">Inicio</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{{ route('hotel') }}" style="color: #8B4513;">Hotel</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="{{ route('habitaciones') }}" style="color: #8B4513;">Habitaciones</a>
       </li>
       <li class="nav-item">
