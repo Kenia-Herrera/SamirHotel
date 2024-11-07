@@ -1,39 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles del Pago</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-</head>
-<body>
-    @if(session('status'))
-        <p>{{ session('status') }}</p>
-    @endif
+@extends('layouts.app')
 
-    <form action="/pago" method="POST">
-        @csrf
-        <h2>Detalles del Pago</h2>
-        <label for="costoPorNoche">Costo por Noche:</label>
-        <input type="text" id="costoPorNoche" name="costoPorNoche" value="{{ session('costoPorNoche') }}" readonly>
+@section('content')
+<div class="container">
+    <h1>Pago de Reserva</h1>
 
-        <h2>Datos del Cliente (por Habitación):</h2>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
+    <div class="row">
+        <!-- Información de la reserva -->
+        <div class="col-md-8">
+            <h2>Detalles de la Reserva</h2>
+            <p><strong>Fecha de Entrada:</strong> {{ $fechaEntrada }}</p>
+            <p><strong>Fecha de Salida:</strong> {{ $fechaSalida }}</p>
+            <p><strong>Noches:</strong> {{ $noches }}</p>
 
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" required>
+            @foreach ($habitaciones as $habitacion)
+                <div class="card mb-3">
+                    <img src="{{ $habitacion->imagen_url }}" class="card-img-top" alt="Imagen de habitación">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ucfirst($habitacion->tipo) }}</h5>
+                        <p class="card-text">{{ $habitacion->descripcion }}</p>
+                        <p class="card-text"><strong>Precio por noche: </strong>${{ $habitacion->precio }}</p>
+                        <p class="card-text"><strong>Total por {{ $noches }} noches: </strong>${{ $habitacion->precio * $noches }}</p>
+                    </div>
+                </div>
+            @endforeach
+        </div>
 
-        <label for="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" required>
-
-        <label for="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <button type="submit">Pagar</button>
-    </form>
-</body>
-</html>
+        <!-- Sección de pago -->
+        <div class="col-md-4">
+            <h2>Desglose Total</h2>
+            <p><strong>Total:</strong> ${{ $total }}</p>
+            <!-- Aquí podrías añadir un formulario de pago -->
+        </div>
+    </div>
+</div>
+@endsection

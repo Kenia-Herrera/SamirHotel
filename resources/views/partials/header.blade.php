@@ -28,7 +28,7 @@
         <a class="nav-link" href="{{ route('contactos') }}" style="color: #8B4513;">Contactanos</a>
       </li>
     </ul>
-    <form action="{{ route('reservar') }}" method="get" class="ml-auto" style="display: inline;">
+    <form action="{{ route('reservar.opciones') }}" method="get" class="ml-auto" style="display: inline;">
         <button type="submit" class="btn btn-primary" style="background-color: #FF5733; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
             Reserva Ya
         </button>
