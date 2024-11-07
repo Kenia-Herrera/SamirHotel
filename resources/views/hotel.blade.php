@@ -20,13 +20,14 @@
     </section>
 
     <section class="container my-5">
-        <h2 class="text-center">Testimonios de Huéspedes</h2>
-        <!-- Ejemplo de testimonio -->
+    <h2 class="text-center">Testimonios de Huéspedes</h2>
+
+    @foreach($opiniones as $opinion)
         <blockquote class="blockquote text-center">
-            <p class="mb-0">"Un lugar hermoso para relajarse y disfrutar." - Andrea R.</p>
+            <p class="mb-0">"{{ $opinion->comentario }}" - {{ $opinion->calificacion }}</p>
         </blockquote>
-        <!-- Agregar más testimonios aquí -->
-    </section>
+    @endforeach
+</section>
 
     <section class="container my-5">
         <h2 class="text-center">Formulario de Calificación</h2>
