@@ -33,7 +33,7 @@ Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios
 
 
 Route::view('/contactos', 'contactos')->name('contactos');
-Route::view('/servicios', 'servicios')->name('servicios');
+
 Route::get('/contactos', [HotelController::class, 'contactos'])->name('contactos');
 
 Route::get('/hotel', [HotelController::class, 'hotel'])->name('hotel');
