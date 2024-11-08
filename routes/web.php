@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\HabitacionController;
 use App\Http\Controllers\GaleriaController;
+use App\Http\Controllers\ServiciosController;
+
 
 Route::view('/', 'inicio')->name('inicio');
 
@@ -19,8 +21,9 @@ Route::get('/habitaciones/create', [HabitacionController::class, 'create'])->nam
 Route::post('/habitaciones', [HabitacionController::class, 'store'])->name('habitaciones.store');
 Route::get('/habitaciones', [HabitacionController::class, 'index'])->name('habitaciones');
 
-# Cambiar a GaleriaController
-Route::get('/galeria', [GaleriaController::class, 'index'])->name('galeria');
 
-Route::view('/servicios', 'servicios')->name('servicios');
+Route::get('/galeria', [GaleriaController::class, 'index'])->name('galeria');
+Route::get('/servicios', [ServiciosController::class, 'index'])->name('servicios');
+
+
 Route::view('/contactos', 'contactos')->name('contactos');
