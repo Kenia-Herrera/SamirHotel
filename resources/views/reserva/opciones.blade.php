@@ -8,13 +8,13 @@
 @section('content')
 <div class="container">
     <h1>Selecciona tus Fechas</h1>
-    <form action="{{ route('reservar.disponibles') }}" method="POST">
+    <form action="{{ route('reservar.disponibles') }}" method="POST" id="fechas-form">
         @csrf
         <label for="fecha_rango">Seleccione fechas de entrada y salida</label>
-            <input type="text" id="fecha_rango" class="form-control" placeholder="Selecciona el rango de fechas" required>
-            <input type="hidden" name="fecha_entrada" id="fecha_entrada">
-            <input type="hidden" name="fecha_salida" id="fecha_salida">
-        <button type="submit" class="btn btn-primary">Buscar Habitaciones Disponibles</button>
+        <input type="text" id="fecha_rango" class="form-control" placeholder="Selecciona el rango de fechas" required>
+        <input type="hidden" name="fecha_entrada" id="fecha_entrada">
+        <input type="hidden" name="fecha_salida" id="fecha_salida">
+        <button type="submit" class="btn btn-primary" id="buscar-habitaciones-btn" disabled>Buscar Habitaciones Disponibles</button>
     </form>
 
     @if(isset($habitacionesDisponibles))
@@ -38,7 +38,7 @@
                 </div>
             @endforeach
 
-            <button type="submit" class="btn btn-primary mt-3">Continuar a Resumen</button>
+            <button type="submit" class="btn btn-primary mt-3">Continuar a Reserva</button>
         </form>
     @endif
 </div>
@@ -56,33 +56,37 @@
             if (selectedDates.length === 2) {
                 document.getElementById('fecha_entrada').value = selectedDates[0].toISOString().slice(0, 10);
                 document.getElementById('fecha_salida').value = selectedDates[1].toISOString().slice(0, 10);
+                document.getElementById('buscar-habitaciones-btn').disabled = false; // Habilitar el botón cuando se seleccionan las fechas
+            } else {
+                document.getElementById('buscar-habitaciones-btn').disabled = true; // Deshabilitar el botón si no se seleccionan fechas
             }
         }
     });
-     // Script para manejar la selección de habitaciones
-     const habitacionesSeleccionadas = new Set();
+
+    // Script para manejar la selección de habitaciones
+    const habitacionesSeleccionadas = new Set();
 
     document.querySelectorAll('.agregar-habitacion').forEach(button => {
-    button.addEventListener('click', function () {
-        const habitacionId = this.getAttribute('data-id');
+        button.addEventListener('click', function () {
+            const habitacionId = this.getAttribute('data-id');
 
-        if (!habitacionesSeleccionadas.has(habitacionId)) {
-            habitacionesSeleccionadas.add(habitacionId);
-            
-            // Crear un input oculto para enviar la habitación seleccionada
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'habitaciones[]';
-            input.value = habitacionId;
-            document.getElementById('form-seleccion-habitaciones').appendChild(input);
+            if (!habitacionesSeleccionadas.has(habitacionId)) {
+                habitacionesSeleccionadas.add(habitacionId);
+                
+                // Crear un input oculto para enviar la habitación seleccionada
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'habitaciones[]';
+                input.value = habitacionId;
+                document.getElementById('form-seleccion-habitaciones').appendChild(input);
 
-            // Deshabilitar el botón y cambiar el texto
-            this.disabled = true;
-            this.classList.add('btn-secondary');
-            this.classList.remove('btn-primary');
-            this.innerText = 'Seleccionado';
-        }
+                // Deshabilitar el botón y cambiar el texto
+                this.disabled = true;
+                this.classList.add('btn-secondary');
+                this.classList.remove('btn-primary');
+                this.innerText = 'Seleccionado';
+            }
+        });
     });
-});
 </script>
 @endsection

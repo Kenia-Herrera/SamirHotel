@@ -24,8 +24,6 @@ Route::post('/reservar/pago', [ReservaController::class, 'showPagoForm'])->name(
 // Ruta para confirmar el pago y registrar las habitaciones en la reserva
 Route::post('/reservar/confirmar-pago', [ReservaController::class, 'confirmarPago'])->name('reservar.confirmarPago');
 
-Route::get('/habitaciones/create', [HabitacionController::class, 'create'])->name('habitaciones.create');
-Route::post('/habitaciones', [HabitacionController::class, 'store'])->name('habitaciones.store');
 Route::get('/habitaciones', [HabitacionController::class, 'index'])->name('habitaciones');
 
 # Cambiar a GaleriaController

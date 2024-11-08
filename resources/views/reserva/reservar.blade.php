@@ -10,32 +10,33 @@
         <!-- Sección de habitaciones (izquierda) -->
         <div class="col-md-8">
         <form id="reservaForm" action="{{ route('reservar.pago') }}" method="POST">
-    @csrf
-    <input type="hidden" name="fecha_entrada" value="{{ $fechaEntrada }}">
-    <input type="hidden" name="fecha_salida" value="{{ $fechaSalida }}">
-    <input type="hidden" name="noches" value="{{ $noches }}">
+            @csrf
+            <input type="hidden" name="fecha_entrada" value="{{ $fechaEntrada }}">
+            <input type="hidden" name="fecha_salida" value="{{ $fechaSalida }}">
+            <input type="hidden" name="noches" value="{{ $noches }}">
 
-    @foreach ($habitacionesConPrecios as $habitacion)
-        <div class="card mb-3">
-            <img src="{{ $habitacion->imagen_url }}" class="card-img-top" alt="Imagen de habitación">
-            <div class="card-body">
-                <h5 class="card-title">{{ ucfirst($habitacion->tipo) }}</h5>
-                <p class="card-text">{{ $habitacion->descripcion }}</p>
-                <p class="card-text"><strong>Precio por noche: </strong>${{ $habitacion->precio }}</p>
-                <p class="card-text"><strong>Total por {{ $noches }} noches: </strong><span id="precio_total_{{ $habitacion->id }}">${{ $habitacion->precio * $noches }}</span></p>
+            @foreach ($habitacionesConPrecios as $habitacion)
+                <div class="card mb-3">
+                    <img src="{{ $habitacion->imagen_url }}" class="card-img-top" alt="Imagen de habitación">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ ucfirst($habitacion->tipo) }}</h5>
+                        <p class="card-text">{{ $habitacion->descripcion }}</p>
+                        <p class="card-text"><strong>Precio por noche: </strong>${{ $habitacion->precio }}</p>
+                        <p class="card-text"><strong>Total por {{ $noches }} noches: </strong><span id="precio_total_{{ $habitacion->id }}">${{ $habitacion->precio * $noches }}</span></p>
 
-                <h6>Huéspedes</h6>
-                <div class="input-group mb-3">
-                    <button type="button" class="btn btn-secondary" onclick="actualizarHuespedes('{{ $habitacion->id }}', -1)">-</button>
-                    <input type="number" id="num_huespedes_{{ $habitacion->id }}" name="huespedes[{{ $habitacion->id }}]" value="1" min="1" max="{{ $habitacion->num_huespedes }}" readonly class="form-control text-center">
-                    <button type="button" class="btn btn-secondary" onclick="actualizarHuespedes('{{ $habitacion->id }}', 1)">+</button>
+                        <h6>Huéspedes</h6>
+                        <div class="input-group mb-3">
+                            <button type="button" class="btn btn-secondary" onclick="actualizarHuespedes('{{ $habitacion->id }}', '{{ $habitacion->tipo }}', -1)">-</button>
+                            <input type="number" id="num_huespedes_{{ $habitacion->id }}" name="huespedes[{{ $habitacion->id }}]" value="1" min="1" max="{{ $habitacion->num_huespedes }}" readonly class="form-control text-center">
+                            <button type="button" class="btn btn-secondary" onclick="actualizarHuespedes('{{ $habitacion->id }}', '{{ $habitacion->tipo }}', 1)">+</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    @endforeach
+            @endforeach
 
-    <button type="button" class="btn btn-primary mt-4" onclick="mostrarConfirmacion()">Proceder al Pago</button>
-</form>
+            <button type="button" class="btn btn-primary mt-4" onclick="mostrarConfirmacion()">Proceder al Pago</button>
+        </form>
+
 
         </div>
 
@@ -59,7 +60,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                ¿Seguro que quieres continuar?
+                ¿Seguro que quieres continuar?      
+                Porfavor selecciona el numero de huespedes
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -93,9 +95,9 @@
         }
 
         // Actualiza la cantidad de huéspedes
-        window.actualizarHuespedes = function(habitacionId, cambio) {
+        window.actualizarHuespedes = function(habitacionId, tipoHabitacion, cambio) {
             const input = document.getElementById(`num_huespedes_${habitacionId}`);
-            const maxHuespedes = parseInt(input.max);
+            const maxHuespedes = { 'Simple': 2, 'Doble': 4, 'Suite': 5 }[tipoHabitacion];
             let numHuespedes = parseInt(input.value) + cambio;
 
             if (numHuespedes > maxHuespedes) {
