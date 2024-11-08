@@ -3,102 +3,130 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Reservas;
 use App\Models\Habitaciones;
-use App\Models\Pagos;
+use App\Models\Reservas;
+use App\Models\Cliente;
 
-class reservaController extends Controller
+class ReservaController extends Controller
 {
-    public function showForm()
-    {
-        return view('reserva.reservar');
-    }
-
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'fechaInicio' => 'required|date',
-            'fechaSalida' => 'required|date|after:fechaInicio',
-            'numHabitaciones' => 'required|integer|min:1',
-            'numAdultos' => 'required|integer|min:1',
-            'numNinos' => 'nullable|integer|min:0',
-        ]);
-
-        // Verificar disponibilidad en la tabla de reservas
-        $reservasOcupadas = Reservas::where(function($query) use ($validatedData) {
-            $query->whereBetween('fecha_entrada', [$validatedData['fechaInicio'], $validatedData['fechaSalida']])
-                  ->orWhereBetween('fecha_salida', [$validatedData['fechaInicio'], $validatedData['fechaSalida']])
-                  ->orWhere(function($query) use ($validatedData) {
-                      $query->where('fecha_entrada', '<=', $validatedData['fechaInicio'])
-                            ->where('fecha_salida', '>=', $validatedData['fechaSalida']);
-                  });
-        })->pluck('habitacion_id')->toArray();
-
-        $habitacionesDisponibles = Habitaciones::whereNotIn('id', $reservasOcupadas)->get();
-
-        // if ($habitacionesDisponibles->count() < $validatedData['numHabitaciones']) {
-        //     return redirect('/reservar')->with('status', 'No hay disponibilidad para las fechas seleccionadas.');
-        // }
-
-        // Pasar los datos a la vista de opciones
-        return view('reserva.opciones', [
-            'fechaInicio' => $validatedData['fechaInicio'],
-            'fechaSalida' => $validatedData['fechaSalida'],
-            'numHabitaciones' => $validatedData['numHabitaciones'],
-            'numAdultos' => $validatedData['numAdultos'],
-            'numNinos' => $validatedData['numNinos'],
-            'habitacionesDisponibles' => $habitacionesDisponibles
-        ]);
-    }
-
+    // Mostrar el formulario de opciones para seleccionar las fechas de entrada y salida
     public function showOptionsForm()
     {
         return view('reserva.opciones');
     }
 
-    public function storeOptions(Request $request)
+    // Mostrar las habitaciones disponibles según las fechas seleccionadas
+    public function showAvailableRooms(Request $request)
     {
-        $validatedData = $request->validate([
-            'habitacionSeleccionada' => 'required|array',
-            'noches' => 'required|integer|min:1',
-        ]);
+        $fechaEntrada = $request->input('fecha_entrada');
+        $fechaSalida = $request->input('fecha_salida');
 
-        // Calcular el precio total
-        $precioTotal = 0;
-        $habitacionesSeleccionadas = Habitaciones::whereIn('id', $validatedData['habitacionSeleccionada'])->get();
-        foreach ($habitacionesSeleccionadas as $habitacion) {
-            $precioTotal += $habitacion->precio * $validatedData['noches'];
+        // Obtener los IDs de las habitaciones ocupadas en el rango de fechas seleccionado
+        $reservasOcupadas = Reservas::where(function ($query) use ($fechaEntrada, $fechaSalida) {
+            $query->whereBetween('fecha_entrada', [$fechaEntrada, $fechaSalida])
+                ->orWhereBetween('fecha_salida', [$fechaEntrada, $fechaSalida]);
+        })->pluck('habitacion_id')->toArray();
+
+        // Obtener las habitaciones disponibles que no están en la lista de habitaciones ocupadas y ordenarlas
+        $habitacionesDisponibles = Habitaciones::whereNotIn('id', $reservasOcupadas)
+                                            ->orderByRaw("FIELD(tipo, 'Suite', 'Doble', 'Simple')")
+                                            ->get();
+
+        return view('reserva.opciones', compact('habitacionesDisponibles', 'fechaEntrada', 'fechaSalida'));
+    }
+
+    // Mostrar el resumen de la reserva después de seleccionar las habitaciones
+    public function showResumenForm(Request $request)
+{
+    $habitacionesSeleccionadas = Habitaciones::whereIn('id', $request->input('habitaciones'))->get();
+    $fechaEntrada = $request->input('fecha_entrada');
+    $fechaSalida = $request->input('fecha_salida');
+
+    // Calcular el número de noches
+    $startDate = new \DateTime($fechaEntrada);
+    $endDate = new \DateTime($fechaSalida);
+    $noches = $startDate->diff($endDate)->days;
+
+    // Añadir límites de huéspedes para cada tipo de habitación
+    $limitesHuespedes = [
+        'Simple' => 2,
+        'Doble' => 4,
+        'Suite' => 5
+    ];
+
+    // Solo necesitamos asignar el precio total base de cada habitación por el número de noches
+    $habitacionesConPrecios = $habitacionesSeleccionadas->map(function ($habitacion) use ($noches, $limitesHuespedes) {
+        $habitacion->precio_total = $habitacion->precio * $noches;
+        $habitacion->limite_huespedes = $limitesHuespedes[$habitacion->tipo] ?? 1;
+        return $habitacion;
+    });
+
+    return view('reserva.reservar', compact('habitacionesConPrecios', 'fechaEntrada', 'fechaSalida', 'noches'));
+}
+
+
+    public function showPagoForm(Request $request)
+    {
+        // Obtener los IDs de las habitaciones desde el campo `huespedes`
+        $habitacionesSeleccionadas = array_keys($request->input('huespedes', []));
+        $numHuespedes = $request->input('huespedes', []);
+
+        if (empty($habitacionesSeleccionadas)) {
+            return redirect()->back()->with('status', 'Debe seleccionar al menos una habitación.');
         }
 
-        // Guardar el costo por noche en la sesión para usarlo en la vista de pago
-        session(['costoTotal' => round($precioTotal, 2), 'costoPorNoche' => round($precioTotal / $validatedData['noches'], 2)]);
+        // Obtener las habitaciones seleccionadas de la base de datos
+        $habitaciones = Habitaciones::whereIn('id', $habitacionesSeleccionadas)->get();
+        $total = 0;
 
-        return redirect('/pago')->with('status', 'Reserva realizada con éxito. Precio total: $' . session('costoTotal'));
+        foreach ($habitaciones as $habitacion) {
+            $habitacionId = $habitacion->id;
+            $huespedes = $numHuespedes[$habitacionId];
+            $precioBase = $habitacion->precio;
+
+            // Calcular precio total para la habitación
+            if ($habitacion->tipo === 'Doble' && $huespedes > 2) {
+                $precioBase += ($huespedes - 2) * 250;
+            } else if ($habitacion->tipo === 'Suite' && $huespedes > 4) {
+                $precioBase += ($huespedes - 4) * 250;
+            }
+
+            $total += $precioBase * $request->input('noches');
+        }
+
+        // Obtener otras variables del request
+        $fechaEntrada = $request->input('fecha_entrada');
+        $fechaSalida = $request->input('fecha_salida');
+        $noches = $request->input('noches');
+
+        // Pasar los datos a la vista de pago
+        return view('reserva.pago', compact('habitaciones', 'total', 'fechaEntrada', 'fechaSalida', 'noches', 'numHuespedes'));
     }
 
-    public function showPaymentForm()
+    // Confirmar el pago y registrar la reserva en la base de datos
+    public function confirmarPago(Request $request)
     {
-        return view('reserva.pago');
-    }
-
-    public function storePayment(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
-            'telefono' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
+        // Registrar el cliente
+        $cliente = Cliente::create([
+            'nombre' => $request->input('nombre'),
+            'email' => $request->input('email'),
+            'telefono' => $request->input('telefono'),
         ]);
 
-        // Aquí puedes guardar la información de pago
-        // Ejemplo:
-        // $pago = new Pagos();
-        // $pago->monto = session('costoPorNoche'); // Esto es un ejemplo, ajustar según tu lógica
-        // $pago->cliente_id = 1; // Supongamos un cliente con ID 1
-        // $pago->fecha_pago = now();
-        // $pago->save();
+        // Proceder con la reserva
+        foreach ($request->input('habitaciones') as $habitacionId) {
+            Reservas::create([
+                'cliente_id' => $cliente->id,
+                'fecha_entrada' => $request->input('fecha_entrada'),
+                'fecha_salida' => $request->input('fecha_salida'),
+                'habitacion_id' => $habitacionId,
+                'num_huespedes' => $request->input('num_huespedes')[$habitacionId],
+                'fecha_reserva' => now(),
+            ]);
+        }
 
-        return redirect('/pago')->with('status', 'Pago realizado con éxito.');
+        return redirect()->route('reservar.opciones')->with('success', 'Reserva confirmada con éxito.');
     }
+
 }
+
