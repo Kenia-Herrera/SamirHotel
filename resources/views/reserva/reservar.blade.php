@@ -1,10 +1,28 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-@extends('layouts.app')
+
+@extends('layoutsReserva.app')
 
 @section('content')
 <div class="container">
-    <h1>Resumen de Reserva</h1>
+<div class="pure-g">
+  <div id="barra-estado-widget-1" class="pure-g no-seleccionable barra-estado-widget">
+    <!-- Paso 1: Elige Fechas y Habitaciones -->
+    <div class="pure-u-1-3 paso">
+      <div class="num">1</div>
+      <div class="txt">Elige Fechas y Habitaciones</div>
+    </div>
+    <!-- Paso 2: Selecciona Habitación -->
+    <div class="pure-u-1-3 paso active">
+      <div class="num">2</div>
+      <div class="txt">Selecciona Numero de huespedes</div>
+    </div>
+    <!-- Paso 3: Datos del Huésped -->
+    <div class="pure-u-1-3 paso">
+      <div class="num">3</div>
+      <div class="txt">Pago y confirmacion</div>
+    </div>
+  </div>
+</div>
+    <h1>Selecciona Numero de huespedes</h1>
 
     <div class="row">
         <!-- Sección de habitaciones (izquierda) -->
@@ -48,6 +66,22 @@
                 <p><strong>Desglose de precio:</strong> <span id="desglose_precio_total">$0</span></p>
             </div>
         </div>
+
+        <div class="pure-g politicas-hotel">
+        <div class="separador-horizontal"><div></div></div>
+
+        <a id="hotel-habitaciones-terminos-condiciones" href="#">Términos y Condiciones del Hotel</a>
+        <div id="terminos-condiciones-habitaciones" style="">
+				<p><strong>Hora de Entrada</strong> ( check in ):&nbsp;&nbsp;15 hrs.</p>				
+                <p><strong>Hora de Salida</strong> ( check out ):&nbsp;&nbsp;12 hrs.</p>												
+                <p><strong>Cancelaciones:</strong> No se realizará ningún cargo o penalidad si la reservación se cancela o modifica con 3 días de anticipación. Si cancelas o modificas la reservación con menos de 3 días de anticipación a la fecha de tu llegada, o no te presentas, el establecimiento cargará 1 noche de estancia como penalización.</p>
+				<p id="zt-formas-de-pago"><strong>Formas de Pago:</strong>
+                <span>Visa, Master Card, Depósito Bancario o Transferencia					</span></p>
+				<p id="politicas_ninios"><strong class="txt-ca">niños:</strong>
+				<span>Este Hotel considera niños  hasta 12 años</span>				</p>
+			</div>
+        </div>
+    </div>
     </div>
 </div>
 

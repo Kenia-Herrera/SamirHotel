@@ -1,75 +1,77 @@
 body {
-    background-image: url('/images/hot.png'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    height: 100vh; 
-    margin: 0; 
-    padding: 0; 
-    font-family: Arial, sans-serif; 
-    color:#007000; 
+    background-image: url('/images/hot.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #004d40; /* Verde pino oscuro */
 }
 
 header {
     margin-bottom: 50px;
-    color:#007000;
+    color: #004d40; /* Verde pino */
 }
-
 
 .card {
     border-radius: 10px;
     overflow: hidden;
+    background-color: #f1f8e9; /* Verde pastel claro */
     transition: transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.8); 
+    background-color: rgba(255, 255, 255, 0.9); /* Blanco translúcido */
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color:#307a3a; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #388e3c; /* Verde bosque */
 }
 
 .container h2 {
-    color:#307a3a; 
+    color: #388e3c;
     margin-bottom: 20px;
 }
 
 .blockquote {
     font-style: italic;
-    color: #070707;
-    border-left: 4px solid #107537 ;
+    color: #333; /* Gris suave */
+    border-left: 4px solid #4caf50; /* Verde vibrante para acento */
     padding-left: 20px;
     margin-bottom: 20px;
 }
 
 .blockquote p {
     font-size: 16px;
-    color:#050605; 
+    color: #555; /* Gris oscuro */
 }
 
 .navbar-toggler {
-    border: none; 
-    border-radius: 5px; 
-    padding: 8px 10px; 
-    transition: background-color 0.3s ease; 
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    transition: background-color 0.3s ease;
+    background-color: #81c784; /* Verde suave */
 }
 
 .navbar-toggler:hover {
-    background-color: #e0e0e0; 
+    background-color: #aed581; /* Verde pastel */
 }
 
 .navbar-toggler-icon {
     background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
 }
 
-
 .navbar {
-    background-color: #007000;
+    background-color: #2e7d32; /* Verde oscuro para barra de navegación */
 }
 
 /* Estilo para el logo */
@@ -77,33 +79,107 @@ header {
     height: 40px;
 }
 
-
 .navbar-nav .nav-link {
-    color: white;
+    color: #ffffff; /* Blanco para legibilidad */
+    transition: color 0.3s;
 }
 
-
-
-
-.btn.btn-primary {
-    background-color: #1d5221;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;  
-}
-
-/* Estilo al pasar el mouse (hover) sobre el botón */
-.btn.btn-primary:hover {
-    background-color: #80c766;  
+.navbar-nav .nav-link:hover {
+    color: #ffb74d; /* Acento cálido en naranja suave */
 }
 
 .nav-item.active .nav-link {
-    color: white;
+    color: #ffeb3b; /* Amarillo brillante para indicar selección */
 }
 
-/* Estilo de los enlaces cuando se pasan el mouse (hover) */
-.navbar-nav .nav-link:hover {
-    color:#0b0c0b;
+.btn.btn-primary {
+    background-color: #43a047; /* Verde medio para botones */
+    color: #ffffff; /* Texto blanco */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.btn.btn-primary:hover {
+    background-color: #ff7043; /* Naranja brillante para hover */
+}
+
+.footer {
+    background-color: #1b5e20; /* Verde oscuro */
+    color: #c8e6c9; /* Verde pastel claro */
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Links en el footer */
+.footer a {
+    color: #ffab91; /* Coral suave */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer a:hover {
+    color: #ffcc80; /* Naranja pastel */
+}
+.barra-estado-widget {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 10px 0;
+  }
+  
+  .paso {
+    text-align: center;
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .paso .num {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2e7d32; /* Verde oscuro */
+  }
+  
+  .paso .txt {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  /* Estilo para el paso activo */
+  .paso.active {
+    background-color: #81c784; /* Verde suave */
+    color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  /* Efecto para pasos no seleccionados */
+  .paso:not(.active) {
+    color: #8e8e8e;
+  }
+  
+  .paso:not(.active) .num,
+  .paso:not(.active) .txt {
+    color: #8e8e8e;
+  }
+  
+  /* Hover para pasos futuros (opcional) */
+  .paso:hover:not(.active) {
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+
+  .separador-horizontal div {
+    display: block;
+    background-color: #AFAFAF;
+    height: 2px;
+    width: 100%;
+}
+.separador-horizontal {
+    margin: 6% 0 !important;
 }

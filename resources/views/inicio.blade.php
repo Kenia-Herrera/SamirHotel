@@ -7,10 +7,10 @@
 @section('content')
     <!-- Banner -->
     <section class="banner d-flex justify-content-center align-items-center" style="background-image: url('{{ asset('images/banner.jpg') }}'); height: 60vh;">
-        <div class="text-center text-white">
+        <div class="text-center text-dark" style="color: #004d40; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);">
             <h1>Bienvenidos a Hotel</h1>
             <p>Disfruta de una experiencia inolvidable en nuestro hotel de lujo.</p>
-            <a href="{{ route('reservar.opciones') }}" class="btn btn-primary">Reserva Ahora</a>
+            <a href="{{ route('reservar.opciones') }}" target="_blank" class="btn btn-primary">Reserva Ahora</a>
         </div>
     </section>
 

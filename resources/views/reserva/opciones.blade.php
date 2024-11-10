@@ -1,12 +1,30 @@
 <!-- Incluye el CSS y JS de Flatpickr desde el CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-@extends('layouts.app')
+@extends('layoutsReserva.app')
 
 @section('content')
 <div class="container">
+<div class="pure-g">
+  <div id="barra-estado-widget-1" class="pure-g no-seleccionable barra-estado-widget">
+    <!-- Paso 1: Elige Fechas y Habitaciones -->
+    <div class="pure-u-1-3 paso active">
+      <div class="num">1</div>
+      <div class="txt">Elige Fechas y Habitaciones</div>
+    </div>
+    <!-- Paso 2: Selecciona Habitación -->
+    <div class="pure-u-1-3 paso">
+      <div class="num">2</div>
+      <div class="txt">Selecciona Numero de huespedes</div>
+    </div>
+    <!-- Paso 3: Datos del Huésped -->
+    <div class="pure-u-1-3 paso">
+      <div class="num">3</div>
+      <div class="txt">Pago y confirmacion</div>
+    </div>
+  </div>
+</div>
+
     <h1>Selecciona tus Fechas</h1>
     <form action="{{ route('reservar.disponibles') }}" method="POST" id="fechas-form">
         @csrf
@@ -38,7 +56,12 @@
                 </div>
             @endforeach
 
-            <button type="submit" class="btn btn-primary mt-3">Continuar a Reserva</button>
+            <!-- Sección de desglose (derecha) -->
+            <div class="col-md-4">
+                <div class="sticky-top" style="top: 20px;">
+                <button type="submit" class="btn btn-primary mt-3">Continuar</button>
+                </div>
+            </div>
         </form>
     @endif
 </div>
@@ -52,25 +75,38 @@
         minDate: "today",
         dateFormat: "Y-m-d",
         onChange: function(selectedDates, dateStr, instance) {
-            // Asignar las fechas de entrada y salida a los inputs ocultos
             if (selectedDates.length === 2) {
                 document.getElementById('fecha_entrada').value = selectedDates[0].toISOString().slice(0, 10);
                 document.getElementById('fecha_salida').value = selectedDates[1].toISOString().slice(0, 10);
-                document.getElementById('buscar-habitaciones-btn').disabled = false; // Habilitar el botón cuando se seleccionan las fechas
+                document.getElementById('buscar-habitaciones-btn').disabled = false;
             } else {
-                document.getElementById('buscar-habitaciones-btn').disabled = true; // Deshabilitar el botón si no se seleccionan fechas
+                document.getElementById('buscar-habitaciones-btn').disabled = true;
             }
         }
     });
 
-    // Script para manejar la selección de habitaciones
+    // Script para manejar la selección y deselección de habitaciones
     const habitacionesSeleccionadas = new Set();
 
     document.querySelectorAll('.agregar-habitacion').forEach(button => {
         button.addEventListener('click', function () {
             const habitacionId = this.getAttribute('data-id');
+            const form = document.getElementById('form-seleccion-habitaciones');
 
-            if (!habitacionesSeleccionadas.has(habitacionId)) {
+            if (habitacionesSeleccionadas.has(habitacionId)) {
+                // Deseleccionar habitación
+                habitacionesSeleccionadas.delete(habitacionId);
+                
+                // Eliminar el input oculto correspondiente
+                const input = form.querySelector(`input[name="habitaciones[]"][value="${habitacionId}"]`);
+                if (input) form.removeChild(input);
+
+                // Cambiar el texto y el estilo del botón
+                this.innerText = 'Agregar';
+                this.classList.add('btn-primary');
+                this.classList.remove('btn-secondary');
+            } else {
+                // Seleccionar habitación
                 habitacionesSeleccionadas.add(habitacionId);
                 
                 // Crear un input oculto para enviar la habitación seleccionada
@@ -78,13 +114,12 @@
                 input.type = 'hidden';
                 input.name = 'habitaciones[]';
                 input.value = habitacionId;
-                document.getElementById('form-seleccion-habitaciones').appendChild(input);
+                form.appendChild(input);
 
-                // Deshabilitar el botón y cambiar el texto
-                this.disabled = true;
+                // Cambiar el texto y el estilo del botón
+                this.innerText = 'Seleccionado';
                 this.classList.add('btn-secondary');
                 this.classList.remove('btn-primary');
-                this.innerText = 'Seleccionado';
             }
         });
     });
