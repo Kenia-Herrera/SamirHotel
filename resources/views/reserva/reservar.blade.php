@@ -1,4 +1,3 @@
-
 @extends('layoutsReserva.app')
 
 @section('content')
@@ -52,7 +51,8 @@
                 </div>
             @endforeach
 
-            <button type="button" class="btn btn-primary mt-4" onclick="mostrarConfirmacion()">Proceder al Pago</button>
+            <!-- Update button to submit form directly -->
+            <button type="submit" class="btn btn-primary mt-4">Proceder al Pago</button>
         </form>
 
 
@@ -74,6 +74,7 @@
         <div id="terminos-condiciones-habitaciones" style="">
 				<p><strong>Hora de Entrada</strong> ( check in ):&nbsp;&nbsp;15 hrs.</p>				
                 <p><strong>Hora de Salida</strong> ( check out ):&nbsp;&nbsp;12 hrs.</p>												
+
                 <p><strong>Cancelaciones:</strong> No se realizará ningún cargo o penalidad si la reservación se cancela o modifica con 3 días de anticipación. Si cancelas o modificas la reservación con menos de 3 días de anticipación a la fecha de tu llegada, o no te presentas, el establecimiento cargará 1 noche de estancia como penalización.</p>
 				<p id="zt-formas-de-pago"><strong>Formas de Pago:</strong>
                 <span>Visa, Master Card, Depósito Bancario o Transferencia					</span></p>
@@ -85,24 +86,6 @@
     </div>
 </div>
 
-<!-- Modal de confirmación -->
-<div class="modal fade" id="modalConfirmacion" tabindex="-1" aria-labelledby="modalConfirmacionLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                ¿Seguro que quieres continuar?      
-                Porfavor selecciona el numero de huespedes
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="document.getElementById('reservaForm').submit()">Continuar</button>            </div>
-        </div>
-    </div>
-</div>
 <script>
         function actualizarDesglosePrecio() {
             let precioTotalGlobal = 0;
@@ -141,12 +124,6 @@
             }
             input.value = numHuespedes;
             actualizarDesglosePrecio();
-        };
-
-        // Muestra el modal de confirmación
-        window.mostrarConfirmacion = function() {
-            const modal = new bootstrap.Modal(document.getElementById('modalConfirmacion'));
-            modal.show();
         };
 
         // Inicializa el desglose de precio al cargar la página 
