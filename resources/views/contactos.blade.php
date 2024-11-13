@@ -5,26 +5,26 @@
 @endsection
 
 @section('content')
-    <head class="text-black text-center py-5">
+    <header class="text-black text-center py-5">
         <h1>Contáctanos</h1>
         <p>Estamos aquí para ayudarte con cualquier consulta.</p>
-    </head>
+    </header>
 
     <section class="container my-5">
         <h2 class="text-center">Formulario de Contacto</h2>
         <form action="{{ route('submitContact') }}" method="POST" class="text-center">
             @csrf
             <div class="form-group">
-                <input type="text" name="name" class="form-control" placeholder="Nombre" required>
+                <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
             </div>
             <div class="form-group my-3">
-                <input type="email" name="email" class="form-control" placeholder="Correo Electrónico" required>
+                <input type="email" name="correo" class="form-control" placeholder="Correo" required>
             </div>
             <div class="form-group my-3">
-                <input type="text" name="subject" class="form-control" placeholder="Asunto" required>
+                <input type="text" name="asunto" class="form-control" placeholder="Asunto" required>
             </div>
             <div class="form-group">
-                <textarea name="message" class="form-control" placeholder="Mensaje" rows="4" required></textarea>
+                <textarea name="mensaje" class="form-control" placeholder="Mensaje" rows="4" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary my-3">Enviar Mensaje</button>
         </form>
@@ -49,4 +49,3 @@
 @section('footer')
     @include('partials.footer')
 @endsection
-

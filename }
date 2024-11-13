@@ -1,0 +1,14 @@
+hotel,contacto component
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch is up to date with 'origin/main'.
+#
+# Changes to be committed:
+#	new file:   app/Http/Controllers/HotelController.php
+#	new file:   resources/views/contactos.blade.php
+#	modified:   resources/views/hotel.blade.php
+#	modified:   resources/views/partials/header.blade.php
+#	modified:   routes/web.php
+#
