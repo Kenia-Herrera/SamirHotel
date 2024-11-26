@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-md-4 text-center mb-4">
                 <div class="card">
-                    <img src="{{ asset('images/spa.jpg') }}" class="card-img-top" alt="Spa">
+                    <img src="{{ asset('images/OIG6.png') }}" class="card-img-top" alt="Spa">
                     <div class="card-body">
                         <h5 class="card-title">Spa</h5>
                         <p class="card-text">Relájate en nuestro exclusivo spa.</p>
@@ -35,16 +35,16 @@
             </div>
             <div class="col-md-4 text-center mb-4">
                 <div class="card">
-                    <img src="{{ asset('images/alb.jpg') }}" class="card-img-top" alt="Piscina">
+                    <img src="{{ asset('images/OIG.png') }}" class="card-img-top" alt="Piscina">
                     <div class="card-body">
-                        <h5 class="card-title">Piscina</h5>
-                        <p class="card-text">Disfruta de nuestra piscina al aire libre.</p>
+                        <h5 class="card-title">Restaurante</h5>
+                        <p class="card-text">Disfruta exquisitos platillos.</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 text-center mb-4">
                 <div class="card">
-                    <img src="{{ asset('images/gim.jpg') }}" class="card-img-top" alt="Gimnasio">
+                    <img src="{{ asset('images/OIG3.png') }}" class="card-img-top" alt="Gimnasio">
                     <div class="card-body">
                         <h5 class="card-title">Gimnasio</h5>
                         <p class="card-text">Mantén tu rutina de ejercicio en nuestro gimnasio.</p>

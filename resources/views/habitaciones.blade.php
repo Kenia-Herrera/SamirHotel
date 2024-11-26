@@ -7,8 +7,7 @@
         @foreach($habitaciones as $habitacion) 
         <div class="col-md-4 mb-4">
             <div class="card">
-                <!-- Usa la URL de la imagen almacenada -->
-                <img src="{{ $habitacion->imagen_url }}" class="card-img-top" alt="{{ $habitacion->tipo }}">
+                <img src="{{ $habitacion->imagen_url }}" class="card-img-top" alt="Imagen de habitación">
                 <div class="card-body">
                     <h5 class="card-title">{{ $habitacion->tipo }}</h5>
                     <p class="card-text">{{ $habitacion->descripcion }}</p>

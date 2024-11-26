@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg">
     <!-- Logo -->
     <a class="navbar-brand" href="#">
-      <img src=".png" alt="Logo" class="navbar-logo">
+    <img src="{{ asset('images/OIG4.png') }}" alt="Logo" class="navbar-logo">
     </a>
 
     <!-- Botón de colapso para dispositivos móviles -->
